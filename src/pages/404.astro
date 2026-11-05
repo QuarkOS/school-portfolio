@@ -1,0 +1,26 @@
+---
+import { copy } from "../content";
+import Layout from "../layouts/Layout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<Layout title="Emilio Schwaiger">
+  <SiteHeader />
+  <main class="mx-auto flex max-w-xl flex-1 flex-col justify-center px-6 py-24">
+    <p class="font-mono text-xs tracking-[0.18em] text-mark uppercase">404</p>
+    <h1 class="mt-3 font-display text-4xl font-medium tracking-tight">
+      <span data-lang="en">{copy.en.notFound.title}</span>
+      <span data-lang="de">{copy.de.notFound.title}</span>
+    </h1>
+    <p class="mt-4 text-muted-foreground">
+      <span data-lang="en">{copy.en.notFound.back}</span>
+      <span data-lang="de">{copy.de.notFound.back}</span>
+    </p>
+    <p class="mt-8">
+      <a class="underline underline-offset-4" href="/">
+        <span data-lang="en">{copy.en.notFound.home}</span>
+        <span data-lang="de">{copy.de.notFound.home}</span>
+      </a>
+    </p>
+  </main>
+</Layout>

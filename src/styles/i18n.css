@@ -1,0 +1,31 @@
+/* Both locales are in the HTML. Hide the inactive one before paint (no React hydration). */
+html:not([data-locale="de"]) [data-lang="de"] {
+  display: none !important;
+}
+html[data-locale="de"] [data-lang="en"] {
+  display: none !important;
+}
+
+html:not(.dark) .icon-sun {
+  display: none;
+}
+html.dark .icon-moon {
+  display: none;
+}
+
+html:not([data-locale="de"]) [data-set-locale="en"],
+html[data-locale="de"] [data-set-locale="de"] {
+  background-color: var(--background);
+  color: var(--foreground);
+  box-shadow: var(--toggle-inset);
+}
+
+html[data-locale="de"] [data-set-locale="en"],
+html:not([data-locale="de"]) [data-set-locale="de"] {
+  color: var(--muted-foreground);
+}
+
+html[data-locale="de"] [data-set-locale="en"]:hover,
+html:not([data-locale="de"]) [data-set-locale="de"]:hover {
+  color: var(--foreground);
+}

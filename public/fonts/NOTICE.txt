@@ -1,0 +1,5 @@
+Fonts self-hosted from the live site subsets (no Google Fonts CDN).
+
+- Syne — SIL Open Font License 1.1 (see OFL-Syne.txt)
+- IBM Plex Sans, IBM Plex Mono — SIL Open Font License 1.1
+  https://github.com/IBM/plex

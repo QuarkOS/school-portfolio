@@ -1,0 +1,19 @@
+{
+  "name": "school-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Static Astro port of emilioschwaiger.com for schoolportfolio.emilioschwaiger.com",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "pack": "npm run build && mkdir -p artifacts && sh -c 'cd dist && tar -czf ../artifacts/school-portfolio-dist.tar.gz *'"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "astro": "^7.4.5"
+  }
+}

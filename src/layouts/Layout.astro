@@ -1,0 +1,169 @@
+---
+import "../styles/global.css";
+import { person, site } from "../content";
+
+interface Props {
+  title?: string;
+  description?: { en: string; de: string };
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/index\.html$/, "/").replace(/\.html$/, "");
+const pageUrl = new URL(pathname || "/", site.url).href;
+const ogImage = new URL("/og.png", site.url).href;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: person.name,
+  url: site.url,
+  email: person.email,
+  jobTitle: "Software engineer",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Großarl",
+    addressRegion: "Salzburg",
+    addressCountry: "AT",
+  },
+  sameAs: [person.githubUrl, person.linkedinUrl, person.npmUrl, person.xUrl],
+};
+---
+
+<!doctype html>
+<html lang="en" data-locale="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description.en} />
+    <meta name="application-name" content={person.name} />
+    <link rel="author" href={person.githubUrl} />
+    <meta name="author" content={person.name} />
+    <meta name="creator" content={person.name} />
+    <meta name="keywords" content="Emilio Schwaiger,QuarkOS,Großarl,software engineer,internship,Vienna" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={pageUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description.en} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:site_name" content={person.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Emilio Schwaiger. GitHub avatar of a silver tabby cat." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={person.xHandle} />
+    <meta name="twitter:creator" content={person.xHandle} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description.en} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Emilio Schwaiger. GitHub avatar of a silver tabby cat." />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="16x16" />
+    <link rel="icon" href="/icon.png" type="image/png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="/apple-icon.png" type="image/png" sizes="180x180" />
+    <link rel="preload" href="/fonts/syne-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/plex-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/plex-mono-500-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      try {
+        var l = localStorage.getItem("emilio.locale");
+        if (l === "en" || l === "de") {
+          document.documentElement.lang = l;
+          document.documentElement.dataset.locale = l;
+        } else {
+          document.documentElement.dataset.locale = "en";
+        }
+        var t = localStorage.getItem("emilio.theme");
+        var d =
+          t === "dark" ||
+          (t !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.classList.toggle("dark", d);
+        document.documentElement.style.colorScheme = d ? "dark" : "light";
+      } catch (e) {}
+    </script>
+  </head>
+  <body class="min-h-svh font-sans __variable_4fbc0a __variable_4b3a31 __variable_9f0762">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <div id="top" class="flex min-h-svh flex-col bg-background">
+      <slot />
+    </div>
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        var localeKey = "emilio.locale";
+        var themeKey = "emilio.theme";
+
+        function locale() {
+          return root.dataset.locale === "de" ? "de" : "en";
+        }
+        function isDark() {
+          return root.classList.contains("dark");
+        }
+        function syncLocaleUi() {
+          var loc = locale();
+          root.lang = loc;
+          document.querySelectorAll("[data-set-locale]").forEach(function (btn) {
+            btn.setAttribute("aria-pressed", btn.getAttribute("data-set-locale") === loc ? "true" : "false");
+          });
+          var group = document.querySelector("[aria-label='Language'], [aria-label='Sprache']");
+          if (group) {
+            group.setAttribute("aria-label", loc === "de" ? "Sprache" : "Language");
+          }
+          var themeBtn = document.querySelector("[data-theme-toggle]");
+          if (themeBtn) {
+            var dark = isDark();
+            themeBtn.setAttribute("aria-pressed", dark ? "true" : "false");
+            themeBtn.setAttribute("title", dark ? (loc === "de" ? "Hell" : "Light") : loc === "de" ? "Dunkel" : "Dark");
+            themeBtn.setAttribute("aria-label", loc === "de" ? "Darstellung" : "Theme");
+          }
+        }
+        function setLocale(next) {
+          if (next !== "en" && next !== "de") return;
+          root.dataset.locale = next;
+          root.lang = next;
+          try {
+            localStorage.setItem(localeKey, next);
+          } catch (e) {}
+          syncLocaleUi();
+        }
+        function setTheme(next) {
+          var dark = next === "dark";
+          root.classList.toggle("dark", dark);
+          root.style.colorScheme = dark ? "dark" : "light";
+          try {
+            localStorage.setItem(themeKey, dark ? "dark" : "light");
+          } catch (e) {}
+          syncLocaleUi();
+        }
+
+        document.querySelectorAll("[data-set-locale]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            setLocale(btn.getAttribute("data-set-locale"));
+          });
+        });
+        var themeBtn = document.querySelector("[data-theme-toggle]");
+        if (themeBtn) {
+          themeBtn.addEventListener("click", function () {
+            setTheme(isDark() ? "light" : "dark");
+          });
+        }
+        window.addEventListener("storage", function (e) {
+          if (e.key === localeKey) setLocale(e.newValue === "de" ? "de" : "en");
+          if (e.key === themeKey) {
+            var prefersDark = false;
+            try {
+              prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            } catch (err) {}
+            var next =
+              e.newValue === "dark" || (e.newValue !== "light" && prefersDark) ? "dark" : "light";
+            setTheme(next);
+          }
+        });
+        syncLocaleUi();
+      })();
+    </script>
+  </body>
+</html>

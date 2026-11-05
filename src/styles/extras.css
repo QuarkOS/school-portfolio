@@ -1,0 +1,32 @@
+/* Arbitrary values used on the live homepage; kept here if the utility dump is incomplete. */
+.size-\[0\.85em\] {
+  width: 0.85em;
+  height: 0.85em;
+}
+.leading-\[1\.25\] {
+  line-height: 1.25;
+}
+.tracking-\[0\.18em\] {
+  letter-spacing: 0.18em;
+}
+.gap-y-0\.5 {
+  row-gap: calc(var(--spacing) * 0.5);
+}
+.grid-cols-\[minmax\(0\,1fr\)_auto\] {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.text-\[clamp\(1\.45rem\,4\.2vw\,2\.15rem\)\] {
+  font-size: clamp(1.45rem, 4.2vw, 2.15rem);
+}
+.text-\[0\.95rem\] {
+  font-size: 0.95rem;
+}
+.max-w-\[60ch\] {
+  max-width: 60ch;
+}
+.max-w-\[18rem\] {
+  max-width: 18rem;
+}
+.rounded-\[0\.2em\] {
+  border-radius: 0.2em;
+}

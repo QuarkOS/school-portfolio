@@ -1,0 +1,239 @@
+---
+import { copy, person } from "../content";
+import Icons from "./Icons.astro";
+import SiteHeader from "./SiteHeader.astro";
+
+const enWork = copy.en.work.items;
+const deWork = copy.de.work.items;
+const enWriting = copy.en.writing.items;
+const deWriting = copy.de.writing.items;
+const [emailLocal, emailDomain] = person.email.split("@");
+const mailto = `mailto:${person.email}`;
+---
+
+<SiteHeader />
+<main class="flex-1 bg-background">
+  <div class="mx-auto max-w-3xl px-4 pb-16 pt-10 sm:px-6 sm:pt-14">
+    <header>
+      <h1 class="font-display text-2xl font-medium tracking-tight sm:text-3xl">{person.name}</h1>
+      <p class="mt-3 text-base text-muted-foreground">
+        <span data-lang="en">{copy.en.identity.roleBefore}</span>
+        <span data-lang="de">{copy.de.identity.roleBefore}</span>
+        {" "}
+        <a
+          href={person.amariUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline decoration-hair underline-offset-4 transition-opacity hover:text-foreground hover:opacity-100"
+        >
+          {copy.en.identity.amari}
+        </a>.
+      </p>
+    </header>
+
+    <section
+      id="identity"
+      aria-labelledby="hero-heading"
+      class="mt-10 flex flex-col gap-8 sm:mt-12 md:flex-row md:items-center md:gap-10"
+    >
+      <div class="min-w-0">
+        <h2
+          id="hero-heading"
+          class="font-display text-[clamp(1.45rem,4.2vw,2.15rem)] leading-[1.25] font-medium tracking-tight"
+        >
+          <span data-lang="en">{copy.en.hero.line1}{" "}</span><span data-lang="de">{copy.de.hero.line1}{" "}</span><span class="inline-flex items-center gap-1.5 whitespace-nowrap align-middle"><Icons name="cursor" class="size-[0.85em] shrink-0" />Cursor</span><span data-lang="en">{" "}{copy.en.hero.and}{" "}</span><span data-lang="de">{" "}{copy.de.hero.and}{" "}</span><span class="inline-flex items-center gap-1.5 whitespace-nowrap align-middle"><img alt="" width="240" height="240" class="size-[1em] shrink-0 rounded-[0.2em] dark:ring-1 dark:ring-hair" src="/images/grokbot.png" />Grok Bot.</span>
+        </h2>
+        <p class="mt-4 max-w-[60ch] text-[0.95rem] leading-relaxed text-muted-foreground">
+          <span data-lang="en">{copy.en.hero.thing}</span>
+          <span data-lang="de">{copy.de.hero.thing}</span>
+        </p>
+      </div>
+      <div class="hidden w-full max-w-[18rem] shrink-0 md:block">
+        <div class="relative w-full">
+          <div class="relative aspect-square overflow-hidden rounded-[var(--radius)] border border-hair bg-secondary">
+            <img
+              alt={person.avatarAlt}
+              width="460"
+              height="460"
+              class="size-full object-cover"
+              src="/images/avatar.jpg"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" aria-labelledby="work-heading" class="mt-16">
+      <h2 id="work-heading" class="font-mono text-xs tracking-[0.18em] text-muted-foreground uppercase">
+        <span data-lang="en">{copy.en.work.kicker}</span>
+        <span data-lang="de">{copy.de.work.kicker}</span>
+      </h2>
+      <ul class="mt-4 border-t border-hair">
+        {
+          enWork.map((item, i) => {
+            const de = deWork[i];
+            const inner = (
+              <>
+                <div class="min-w-0">
+                  <p class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                    <span class="font-medium">{item.name}</span>
+                    {"metric" in item && item.metric ? (
+                      <>
+                        <span class="font-mono text-xs tabular-nums text-mark" data-lang="en">
+                          {item.metric}
+                        </span>
+                        <span class="font-mono text-xs tabular-nums text-mark" data-lang="de">
+                          {"metric" in de ? de.metric : item.metric}
+                        </span>
+                      </>
+                    ) : null}
+                    {"status" in item && item.status ? (
+                      <>
+                        <span class="font-mono text-xs text-mark" data-lang="en">
+                          {item.status}
+                        </span>
+                        <span class="font-mono text-xs text-mark" data-lang="de">
+                          {"status" in de ? de.status : item.status}
+                        </span>
+                      </>
+                    ) : null}
+                  </p>
+                  <p class="mt-0.5 text-sm leading-snug break-words text-muted-foreground">
+                    <span data-lang="en">{item.description}</span>
+                    <span data-lang="de">{de.description}</span>
+                  </p>
+                </div>
+                <span class="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">{item.dates}</span>
+              </>
+            );
+            const rowClass = "grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4 py-3";
+            return (
+              <li class={"href" in item && item.href ? "border-b border-hair" : `border-b border-hair ${rowClass}`}>
+                {"href" in item && item.href ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class={`${rowClass} transition-opacity hover:opacity-80`}
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  inner
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    <section id="writing" aria-labelledby="writing-heading" class="mt-14">
+      <h2 id="writing-heading" class="font-mono text-xs tracking-[0.18em] text-muted-foreground uppercase">
+        <span data-lang="en">{copy.en.writing.kicker}</span>
+        <span data-lang="de">{copy.de.writing.kicker}</span>
+      </h2>
+      <ul class="mt-4 border-t border-hair">
+        {
+          enWriting.map((item, i) => {
+            const de = deWriting[i];
+            return (
+              <li class="border-b border-hair">
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4 py-3 transition-opacity hover:opacity-80"
+                >
+                  <div class="min-w-0">
+                    <p class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                      <span class="font-medium">{item.title}</span>
+                    </p>
+                    <p class="mt-0.5 text-sm leading-snug break-words text-muted-foreground">
+                      <span data-lang="en">{item.description}</span>
+                      <span data-lang="de">{de.description}</span>
+                    </p>
+                  </div>
+                  <span class="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">{item.dates}</span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    <section id="currently" aria-labelledby="currently-heading" class="mt-14">
+      <h2 id="currently-heading" class="font-mono text-xs tracking-[0.18em] text-muted-foreground uppercase">
+        <span data-lang="en">{copy.en.currently.kicker}</span>
+        <span data-lang="de">{copy.de.currently.kicker}</span>
+      </h2>
+      <dl class="mt-4 space-y-2 rounded-[var(--radius)] bg-muted px-4 py-4 font-mono text-sm leading-relaxed">
+        <div class="flex gap-3">
+          <dt class="w-24 shrink-0 text-muted-foreground">
+            <span data-lang="en">{copy.en.currently.locationLabel}</span>
+            <span data-lang="de">{copy.de.currently.locationLabel}</span>
+          </dt>
+          <dd class="min-w-0 break-words">
+            <span data-lang="en">{copy.en.currently.location}</span>
+            <span data-lang="de">{copy.de.currently.location}</span>
+          </dd>
+        </div>
+        <div class="flex gap-3">
+          <dt class="w-24 shrink-0 text-muted-foreground">
+            <span data-lang="en">{copy.en.currently.nowLabel}</span>
+            <span data-lang="de">{copy.de.currently.nowLabel}</span>
+          </dt>
+          <dd class="min-w-0 break-words">
+            <span data-lang="en">{copy.en.currently.now}</span>
+            <span data-lang="de">{copy.de.currently.now}</span>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <section id="reach" aria-labelledby="reach-heading" class="mt-14">
+      <div class="rounded-[var(--radius)] bg-muted px-4 py-5">
+        <h2 id="reach-heading" class="font-display text-xl font-medium tracking-tight">
+          <span data-lang="en">{copy.en.reach.heading}</span>
+          <span data-lang="de">{copy.de.reach.heading}</span>
+        </h2>
+        <p class="mt-3 max-w-prose text-sm text-muted-foreground">
+          <span data-lang="en">{copy.en.reach.body}</span>
+          <span data-lang="de">{copy.de.reach.body}</span>
+        </p>
+        <div class="mt-5 flex flex-col items-start gap-y-3">
+          <a
+            href={mailto}
+            class="inline-flex max-w-full flex-wrap items-center gap-2 rounded-[var(--radius)] bg-primary px-3 py-2 text-sm font-medium break-words text-primary-foreground"
+          >
+            <Icons name="mail" />
+            <span>
+              {emailLocal}<span>@</span>{emailDomain}{" "}→
+            </span>
+          </a>
+          <div class="flex items-center gap-x-5">
+            <a
+              href={person.xUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X"
+              class="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-opacity hover:text-foreground hover:opacity-100"
+            >
+              <Icons name="x" />X
+            </a>
+            <a
+              href={person.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              class="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-opacity hover:text-foreground hover:opacity-100"
+            >
+              <Icons name="github" />GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
